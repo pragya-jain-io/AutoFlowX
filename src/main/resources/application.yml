@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/autoflowx
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+
+jwt:
+  secret: "E19A9759E26E4633AF6828C95CC51"
+  expiration: 86400000 # 1 day in milliseconds
