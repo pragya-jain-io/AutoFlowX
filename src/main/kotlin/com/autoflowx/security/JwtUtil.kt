@@ -10,19 +10,16 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.boot.context.properties.ConfigurationProperties
 import java.nio.charset.StandardCharsets
 import javax.crypto.spec.SecretKeySpec
-@ConfigurationProperties(prefix = "jwt")
-@Component
-class JwtUtil(private val jwtProperties: com.autoflowx.config.JwtProperties) {
-    val secret = jwtProperties.secret  // from application.yml
-    val key = Keys.hmacShaKeyFor(secret.toByteArray(StandardCharsets.UTF_8))
 
-    //private val key = SecretKeySpec(jwtProperties.secret.toByteArray(), "HmacSHA256")
+
+class JwtUtil(secret: String, private val expiration: Long) {
+    private val key = Keys.hmacShaKeyFor(secret.toByteArray(StandardCharsets.UTF_8))
 
     fun generateToken(username: String): String {
         return Jwts.builder()
             .setSubject(username)
             .setIssuedAt(Date(System.currentTimeMillis()))
-//            .setExpiration(Date(System.currentTimeMillis() + jwtProperties.expiration))
+            .setExpiration(Date(System.currentTimeMillis() + expiration))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
     }
