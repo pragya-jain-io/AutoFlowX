@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono
 @Component
 class JwtFilter : WebFilter {
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
-        // TODO: Extract JWT, validate token, authenticate user
+        // pending: Extract JWT, validate token, authenticate user
         return chain.filter(exchange) // Continue the filter chain
     }
 }

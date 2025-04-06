@@ -2,6 +2,9 @@ package com.autoflowx.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.ProviderManager
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.core.userdetails.User
@@ -11,14 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.server.SecurityWebFilterChain
-import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers
-import org.springframework.security.web.server.authentication.AuthenticationWebFilter
-import org.springframework.security.web.server.authentication.HttpBasicServerAuthenticationEntryPoint
-import org.springframework.security.web.server.authentication.ServerAuthenticationConverter
-import org.springframework.security.web.server.authorization.AuthorizationContext
-import org.springframework.security.web.server.context.WebSessionServerSecurityContextRepository
-import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher
-import reactor.core.publisher.Mono
+
 
 @Configuration
 class SecurityConfig(private val jwtFilter: JwtFilter) {
@@ -46,4 +42,21 @@ class SecurityConfig(private val jwtFilter: JwtFilter) {
             .addFilterBefore(jwtFilter, SecurityWebFiltersOrder.AUTHENTICATION) // Correctly add JWT filter
             .build()
     }
+//    @Bean
+//    fun authenticationManager(userDetailsService: UserDetailsService): AuthenticationManager {
+//        val authProvider = DaoAuthenticationProvider()
+//        authProvider.setUserDetailsService(userDetailsService)
+//        authProvider.setPasswordEncoder(passwordEncoder())
+//        return ProviderManager(authProvider)
+//    }
+@Bean
+fun authenticationManager(
+    userDetailsService: UserDetailsService,
+    passwordEncoder: PasswordEncoder
+): AuthenticationManager {
+    val provider = DaoAuthenticationProvider()
+    provider.setUserDetailsService(userDetailsService)
+    provider.setPasswordEncoder(passwordEncoder)  // Must be BCrypt
+    return ProviderManager(provider)
+}
 }

@@ -12,5 +12,5 @@ logging:
     org.springframework: INFO
 
 jwt:
-  secret: "E19A9759E26E4633AF6828C95CC51"
+  secret: "zD6tF8Jh@97Lm!aXoPc3VrQ9Uz#KwEtB"
   expiration: 86400000 # 1 day in milliseconds
