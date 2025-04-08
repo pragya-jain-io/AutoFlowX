@@ -5,16 +5,26 @@ import com.autoflowx.repository.WorkflowRepository
 import org.springframework.stereotype.Service
 import com.autoflowx.model.Step
 import com.autoflowx.model.Action
+import com.autoflowx.model.ExecutionLog
+import com.autoflowx.repository.ExecutionLogRepository
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 
 
 @Service
-class WorkflowExecutor(private val workflowRepository: WorkflowRepository) {
+class WorkflowExecutor(private val workflowRepository: WorkflowRepository, private val logRepository: ExecutionLogRepository) {
 
     suspend fun execute(workflowId: String) {
         val workflow = workflowRepository.findById(workflowId).awaitSingleOrNull()
             ?: throw IllegalArgumentException("Workflow not found")
 
+        logRepository.save(
+            ExecutionLog(
+                workflowId = workflowId,
+                stepName = "WORKFLOW",
+                status = "STARTED",
+                message = "Workflow execution started"
+            )
+        ).subscribe()
 
         val steps = workflow.steps.sortedBy { it.order }
 

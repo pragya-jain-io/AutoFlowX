@@ -5,11 +5,11 @@ AutoFlowX is a **Workflow Orchestration & Automation System** that helps teams *
 ## Features (Planned)  
 
 ### **Stage 1: Basic MVP**  
- User Login & Authentication (JWT)  
+ ~~User Login & Authentication (JWT)  
  Create Workflows (Define steps & actions)  
  Execute Workflows (Run steps in order)  
- Trigger Workflows (Start execution via events)  
- Store Logs (Track workflow progress)  
+ Trigger Workflows (Start execution via events) 
+ Store Logs (Track workflow progress)~~
 
 ### **Stage 2: Advanced Features**  
  Role-Based Access (Admin, Editor, Viewer)  
